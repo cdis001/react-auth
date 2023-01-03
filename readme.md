@@ -3,12 +3,12 @@
 ## react-auth
 
 - vite
+- react-hook-form
+- recoil
 
 ## nextjs-recoil
 
 ## 공통 기술
-
-- recoil
 
 ## 구현 사항
 
