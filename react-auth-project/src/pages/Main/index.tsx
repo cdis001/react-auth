@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
 
+import { isLoginState } from "../../recoil/atoms";
 import AuthBox from "../../components/AuthBox";
 import AuthInputBox from "../../components/AuthInputBox";
 import AuthButton from "../../components/AuthButton";
@@ -9,19 +11,18 @@ import AuthButtonList from "../../components/AuthButtonList";
 
 const Main = () => {
   const navigate = useNavigate();
+  const [isLogin, setIsLogin] = useRecoilState(isLoginState);
 
   const userLogoutBtn = () => {
-    localStorage.setItem("isLogin", "false");
+    setIsLogin(false);
     navigate("/login");
   };
 
   useEffect(() => {
-    const isLogin = localStorage.getItem("isLogin") || "false";
-
-    if (isLogin === "false") {
+    if (!isLogin) {
       navigate("/login");
     }
-  }, []);
+  }, [isLogin]);
 
   return (
     <section>
