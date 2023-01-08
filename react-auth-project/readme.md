@@ -39,3 +39,11 @@
 > https://reactrouter.com/en/main/upgrading/v5
 
 > https://reactrouter.com/en/main/routers/create-browser-router
+
+- localStorage로 관리하던 로그인 여부를 recoil로 관리하도록 업데이트
+  - 개인적으로는 초기값 설정이 가능한 부분이 편리하다고 생각함.
+    - localStorage에서는 가장 처음 시작하는 페이지에 setItem()을 사용해야 했는데, 이게 살짝 꼬이거나 하면 답이 없었기 때문에... 명시적으로 초기값을 설정하는 부분이 편리함
+  - 타입을 설정할 수 있는 부분도 편리
+    - 이 전에 localStorage에서는 boolean 타입을 잘못 줬다가 페이지 이동이 미친듯이 되는 오류가 있었어서..(main <-> login 무한반복) string 타입으로 설정해줬었는데 recoil에서는 명확히 타입을 지정할 수 있어, 비교문 사용시 좀 더 편리
+  - 이 프로젝트에서는 느끼지 못 하는 부분이긴 하지만ㅋㅋ 이런 여러 상태들을 한 곳에 모아놓고 볼 수 있는것도 편리!
+    - redux를 사용했을 때 처럼 여러 상태들을 한 곳에서 관리 할 수 있어 보기도 편하고 코드 짜기도 편리할듯
