@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 
 import { isLoginState } from "../../recoil/atoms";
 import AuthBox from "../../components/AuthBox";
-// import AuthInputBox from "../../components/AuthInputBox";
+import AuthInputBox from "../../components/AuthInputBox";
 import AuthButton from "../../components/AuthButton";
 import AuthButtonList from "../../components/AuthButtonList";
 
@@ -46,7 +46,11 @@ type LoginDatas = {
 };
 
 const Login = () => {
-  const { register, handleSubmit } = useForm<LoginDatas>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginDatas>();
   const [isLogin, setIsLogin] = useRecoilState(isLoginState);
 
   const navigate = useNavigate();
@@ -72,11 +76,22 @@ const Login = () => {
     <section>
       <h1>LOGIN PAGE</h1>
       <AuthBox>
-        <AuthInput placeholder={"Email or username"} {...register("userId")} />
-        <AuthInput
+        <AuthInputBox
+          placeholder={"Email or username"}
+          isError={errors.userId}
+          errorMessage={errors.userId?.message}
+          register={register("userId", {
+            required: "userId is required",
+          })}
+        />
+        <AuthInputBox
           placeholder={"password"}
-          type="password"
-          {...register("password")}
+          type={"password"}
+          isError={errors.password}
+          errorMessage={errors.password?.message}
+          register={register("password", {
+            required: "password is required",
+          })}
         />
         <AuthButton onClick={userLoginBtn} title={`로그인`} />
         <AuthButtonList>

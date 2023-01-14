@@ -10,32 +10,6 @@ import AuthButtonList from "../../components/AuthButtonList";
 
 import { getUserByUsername, getUserByEmail, joinUser } from "../../__users/api";
 
-const emailReg = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-
-const AuthInput = styled.input`
-  height: 38px;
-  padding: 8px 12px;
-  box-sizing: border-box;
-  margin: 10px 0;
-  border: 1px solid #dbdbdb;
-  border-radius: 4px;
-
-  &::placeholder {
-    color: #ccc;
-  }
-
-  &:focus {
-    outline: none;
-    border: 1px solid #949494;
-  }
-`;
-
-const ErrorMessage = styled.p`
-  margin: 0;
-  color: #dc2626;
-  font-size: 12px;
-`;
-
 type JoinDatas = {
   email: string;
   username: string;
@@ -68,9 +42,11 @@ const Join = () => {
     <section>
       <h1>JOIN</h1>
       <AuthBox>
-        <AuthInput
+        <AuthInputBox
           placeholder={"Email"}
-          {...register("email", {
+          isError={errors.email}
+          errorMessage={errors.email?.message}
+          register={register("email", {
             required: "Email is required",
             pattern: {
               value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
@@ -86,12 +62,11 @@ const Join = () => {
             },
           })}
         />
-        <ErrorMessage>
-          {errors.email ? errors.email.message : null}
-        </ErrorMessage>
-        <AuthInput
+        <AuthInputBox
           placeholder={"username"}
-          {...register("username", {
+          isError={errors.username}
+          errorMessage={errors.username?.message}
+          register={register("username", {
             required: "username is required",
             pattern: {
               message: "This username is not available.",
@@ -106,13 +81,12 @@ const Join = () => {
             },
           })}
         />
-        <ErrorMessage>
-          {errors.username ? errors.username.message : null}
-        </ErrorMessage>
-        <AuthInput
+        <AuthInputBox
           placeholder={"password"}
           type={"password"}
-          {...register("password", {
+          isError={errors.password}
+          errorMessage={errors.password?.message}
+          register={register("password", {
             required: "password is required",
             pattern: {
               value: /^[A-Za-z1~9\\d`~!@#$%^&*()-_=+]{6,}$/,
@@ -120,13 +94,12 @@ const Join = () => {
             },
           })}
         />
-        <ErrorMessage>
-          {errors.password ? errors.password.message : null}
-        </ErrorMessage>
-        <AuthInput
+        <AuthInputBox
           placeholder={"passwordCheck"}
           type={"password"}
-          {...register("passwordCheck", {
+          isError={errors.passwordCheck}
+          errorMessage={errors.passwordCheck?.message}
+          register={register("passwordCheck", {
             required: "passwordCheck is required",
             validate: {
               positive: (text) =>
@@ -134,9 +107,6 @@ const Join = () => {
             },
           })}
         />
-        <ErrorMessage>
-          {errors.passwordCheck ? errors.passwordCheck.message : null}
-        </ErrorMessage>
         <AuthButton title={`회원가입`} onClick={joinUserBtn} />
         <AuthButtonList>
           <li>

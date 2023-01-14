@@ -28,52 +28,19 @@ const AuthInputDiv = styled.div`
     color: #dc2626;
     font-size: 12px;
   }
-
-  & > .hidden {
-    visibility: hidden;
-  }
 `;
 
 const AuthInputBox = ({
   placeholder,
-  validationCheck = false,
-  errorMessage,
-  value = "",
-  setValue = () => {},
+  isError = false,
+  errorMessage = "",
   type = "text",
-  onBlur = () => {},
-  onChange = () => {},
+  register = {},
 }) => {
-  const [isError, setIsError] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (value.length === 0) {
-      setIsError(false);
-    } else {
-      setIsError(!validationCheck);
-    }
-  }, [validationCheck]);
-
-  const onChangeHandle = (e) => {
-    const targetValue = e.target.value;
-    setValue(targetValue);
-    if (targetValue.length === 0) {
-      setIsError(false);
-    } else {
-      setIsError(!validationCheck);
-    }
-    onChange();
-  };
-
   return (
     <AuthInputDiv>
-      <input
-        placeholder={placeholder}
-        onChange={onChangeHandle}
-        onBlur={onBlur}
-        type={type}
-      />
-      <p className={`${isError ? null : "hidden"} `}>{errorMessage}</p>
+      <input placeholder={placeholder} type={type} {...register} />
+      <p>{isError ? errorMessage : null}</p>
     </AuthInputDiv>
   );
 };
