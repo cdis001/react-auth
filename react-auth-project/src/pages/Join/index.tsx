@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 import AuthBox from "../../components/AuthBox";
 import AuthInputBox from "../../components/AuthInputBox";
@@ -11,118 +12,131 @@ import { getUserByUsername, getUserByEmail, joinUser } from "../../__users/api";
 
 const emailReg = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
+const AuthInput = styled.input`
+  height: 38px;
+  padding: 8px 12px;
+  box-sizing: border-box;
+  margin: 10px 0;
+  border: 1px solid #dbdbdb;
+  border-radius: 4px;
+
+  &::placeholder {
+    color: #ccc;
+  }
+
+  &:focus {
+    outline: none;
+    border: 1px solid #949494;
+  }
+`;
+
+const ErrorMessage = styled.p`
+  margin: 0;
+  color: #dc2626;
+  font-size: 12px;
+`;
+
+type JoinDatas = {
+  email: string;
+  username: string;
+  password: string;
+  passwordCheck: string;
+};
+
 const Join = () => {
-  const [email, setEmail] = useState<string>("");
-  const [isEmailCheck, setIsEmailCheck] = useState<boolean>(false);
+  const { register, handleSubmit, formState, setError, getValues } =
+    useForm<JoinDatas>({
+      mode: "onChange",
+    });
 
-  const [username, setUsername] = useState<string>("");
-  const [isUsernameCheck, setIsUsernameCheck] = useState<boolean>(true);
-
-  const [password, setPassword] = useState<string>("");
-  const [secondPassword, setSecondPassword] = useState<string>("");
-  const [isPasswordCheck, setIsPasswordCheck] = useState<boolean>(false);
-  const [isSecondPasswordCheck, setIsSecondPasswordCheck] =
-    useState<boolean>(false);
+  const { errors } = formState;
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    setEmail(email);
-    setIsEmailCheck(emailReg.test(email));
-  }, [email]);
+  const joinUserBtn = handleSubmit((d) => {
+    const { status, message = "" } = joinUser(d);
 
-  useEffect(() => {
-    setPassword(password);
-    setIsPasswordCheck(password.length > 5);
-    setIsSecondPasswordCheck(password === secondPassword);
-  }, [password]);
-
-  useEffect(() => {
-    setSecondPassword(secondPassword);
-    setIsSecondPasswordCheck(password === secondPassword && isPasswordCheck);
-    setIsPasswordCheck(password.length > 5);
-  }, [secondPassword]);
-
-  const duplicateEmailCheck = () => {
-    const hasUser = getUserByEmail(email);
-
-    if (isEmailCheck) {
-      if (!hasUser) {
-        setIsEmailCheck(true);
-      } else {
-        setIsEmailCheck(false);
-      }
+    if (status === "success") {
+      alert("회원가입 성공");
+      navigate("/login");
     } else {
-      setIsEmailCheck(false);
+      alert("회원가입에 실패하셨습니다.");
     }
-  };
-
-  const duplicateUsernameCheck = () => {
-    const hasUser = getUserByUsername(username);
-
-    if (!hasUser) {
-      setIsUsernameCheck(true);
-    } else {
-      setIsUsernameCheck(false);
-    }
-  };
-
-  const joinUserBtn = () => {
-    if (
-      isEmailCheck &&
-      isUsernameCheck &&
-      isPasswordCheck &&
-      isSecondPasswordCheck
-    ) {
-      const { status } = joinUser({ email, username, password });
-
-      if (status === "success") {
-        alert("회원가입 성공");
-        navigate("/login");
-      } else {
-        alert("회원가입에 실패하셨습니다.");
-      }
-    } else {
-      alert("사용자 정보를 다시 확인해주세요");
-    }
-  };
+  });
 
   return (
     <section>
       <h1>JOIN</h1>
       <AuthBox>
-        <AuthInputBox
-          value={email}
-          setValue={setEmail}
-          validationCheck={isEmailCheck}
-          onBlur={duplicateEmailCheck}
+        <AuthInput
           placeholder={"Email"}
-          errorMessage={"This email is not available."}
+          {...register("email", {
+            required: "Email is required",
+            pattern: {
+              value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+              message: "This email is not available.",
+            },
+            onBlur: (e) => {
+              !!getUserByEmail(getValues("email"))
+                ? setError("email", {
+                    type: "duplicate",
+                    message: "This email is already used",
+                  })
+                : null;
+            },
+          })}
         />
-        <AuthInputBox
-          value={username}
-          setValue={setUsername}
-          validationCheck={isUsernameCheck}
-          onBlur={duplicateUsernameCheck}
+        <ErrorMessage>
+          {errors.email ? errors.email.message : null}
+        </ErrorMessage>
+        <AuthInput
           placeholder={"username"}
-          errorMessage={"This username is not available."}
+          {...register("username", {
+            required: "username is required",
+            pattern: {
+              message: "This username is not available.",
+            },
+            onBlur: (e) => {
+              !!getUserByUsername(getValues("username"))
+                ? setError("username", {
+                    type: "duplicate",
+                    message: "This username is already used",
+                  })
+                : null;
+            },
+          })}
         />
-        <AuthInputBox
-          value={password}
-          setValue={setPassword}
-          validationCheck={isPasswordCheck}
-          type={"password"}
+        <ErrorMessage>
+          {errors.username ? errors.username.message : null}
+        </ErrorMessage>
+        <AuthInput
           placeholder={"password"}
-          errorMessage={"This password is not available."}
-        />
-        <AuthInputBox
-          value={secondPassword}
-          setValue={setSecondPassword}
-          validationCheck={isSecondPasswordCheck}
           type={"password"}
-          placeholder={"password check"}
-          errorMessage={"This password check is not available."}
+          {...register("password", {
+            required: "password is required",
+            pattern: {
+              value: /^[A-Za-z1~9\\d`~!@#$%^&*()-_=+]{6,}$/,
+              message: "This password is not available.",
+            },
+          })}
         />
+        <ErrorMessage>
+          {errors.password ? errors.password.message : null}
+        </ErrorMessage>
+        <AuthInput
+          placeholder={"passwordCheck"}
+          type={"password"}
+          {...register("passwordCheck", {
+            required: "passwordCheck is required",
+            validate: {
+              positive: (text) =>
+                getValues("password") === text || "Password do not match.",
+            },
+          })}
+        />
+        <ErrorMessage>
+          {errors.passwordCheck ? errors.passwordCheck.message : null}
+        </ErrorMessage>
         <AuthButton title={`회원가입`} onClick={joinUserBtn} />
         <AuthButtonList>
           <li>
