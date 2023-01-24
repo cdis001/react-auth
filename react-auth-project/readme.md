@@ -17,8 +17,11 @@
   - localstorage에 isLogin, "false" 값을 주어 로그아웃 상태로 만듦
 
 - [x] 유효성 검사
+
   - 실시간으로 유효성 검사를 해야 하는 항목의 경우 useEffect를 이용해 유효한지 여부를 판단하여 값 설정
   - 중복 체크의 경우에는 onBlur를 이용해 중복값 체크
+
+- [ ] 테스트 코드 작성
 
 ## Log
 
@@ -88,3 +91,32 @@
   - 기능때문에 이래저래 복잡했던 컴포넌트인데, 복잡한 부분을 react-hook-form으로 관리하고 난 뒤에 훨씬 간단해짐
   - 스타일 위주의 컴포넌트로 변경!
   - 기존에도 좀 더 스타일 위주의 컴포넌트로 쓸 수 있지 않았을까...
+
+## issue
+
+- ts-jest 설치 이슈
+
+  1. 개요
+     - test 코드를 작성하기 위한 라이브러리들 설치 중 ts-jest 설치가 안 되는 이슈 발생
+  2. 문제
+     - ts-jest 설치시,
+       "info There appears to be trouble with your network connection. Retrying..." 이란 문구가 4회 뜬 뒤
+       "error An unexpected error occurred: "https://registry.yarnpkg.com/ts-jest: ESOCKETTIMEDOUT"."
+       라고 에러가 남
+  3. 해결 과정
+     1. config의 ssl 설정 변경
+        - yarn config set "strict-ssl" false 명령어 실행
+        - 실패...
+     2. 설정파일 변경
+        - jest.config.json 파일 삭제
+        - package.json에 jest 설정
+          - testEnvironment, moduleNameMapper, setupFilesAfterEnv 설정 추가
+        - 실패..
+     3. yarn add -D git+https://github.com/kulshekhar/ts-jest.git
+  4. 해결
+
+     - yarn add -D git+https://github.com/kulshekhar/ts-jest.git
+     - KT에서 ts-jest 설치가 안 돼서 생기는 오류란다... 세상에나...
+
+  5. 참고
+     - https://www.inflearn.com/questions/753777/nest-new-aaa-%EC%84%A4%EC%B9%98-%EC%98%A4%EB%A5%98-%EB%AC%B8%EC%A0%9C-npx%EB%8F%84-%EC%95%88%EB%8F%BC%EC%9A%94
