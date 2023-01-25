@@ -7,7 +7,11 @@ const AuthBtnList = styled.ul`
   justify-content: flex-end;
 `;
 
-const AuthButtonList = ({ children }) => {
+interface AuthButtonListProps {
+  children?: React.ReactNode;
+}
+
+const AuthButtonList = ({ children }: AuthButtonListProps) => {
   return <AuthBtnList>{children}</AuthBtnList>;
 };
 

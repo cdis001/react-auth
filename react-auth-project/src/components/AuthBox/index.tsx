@@ -12,7 +12,11 @@ const AuthBoxDiv = styled.div`
   flex-direction: column;
 `;
 
-const AuthBox = ({ children }) => {
+interface AuthBoxProps {
+  children?: React.ReactNode;
+}
+
+const AuthBox = ({ children }: AuthBoxProps) => {
   return <AuthBoxDiv>{children}</AuthBoxDiv>;
 };
 

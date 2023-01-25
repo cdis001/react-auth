@@ -30,13 +30,21 @@ const AuthInputDiv = styled.div`
   }
 `;
 
+interface AuthInputBoxProps {
+  placeholder?: string;
+  isError?: boolean;
+  errorMessage?: string;
+  type?: string;
+  register?: Object;
+}
+
 const AuthInputBox = ({
   placeholder,
   isError = false,
   errorMessage = "",
   type = "text",
   register = {},
-}) => {
+}: AuthInputBoxProps) => {
   return (
     <AuthInputDiv>
       <input placeholder={placeholder} type={type} {...register} />

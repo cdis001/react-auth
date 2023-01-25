@@ -14,7 +14,12 @@ const AuthBtn = styled.button`
   cursor: pointer;
 `;
 
-const AuthButton = ({ title, onClick }) => {
+interface AuthButtonProps {
+  title?: string;
+  onClick?: () => void;
+}
+
+const AuthButton = ({ title, onClick }: AuthButtonProps) => {
   return <AuthBtn onClick={onClick}>{title}</AuthBtn>;
 };
 

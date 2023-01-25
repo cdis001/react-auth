@@ -44,7 +44,7 @@ const Join = () => {
       <AuthBox>
         <AuthInputBox
           placeholder={"Email"}
-          isError={errors.email}
+          isError={!!errors.email}
           errorMessage={errors.email?.message}
           register={register("email", {
             required: "Email is required",
@@ -64,11 +64,12 @@ const Join = () => {
         />
         <AuthInputBox
           placeholder={"username"}
-          isError={errors.username}
+          isError={!!errors.username}
           errorMessage={errors.username?.message}
           register={register("username", {
             required: "username is required",
             pattern: {
+              value: /^[A-Za-z1~9\\d`~!@#$%^&*()-_=+]{3,9}$/,
               message: "This username is not available.",
             },
             onBlur: (e) => {
@@ -84,7 +85,7 @@ const Join = () => {
         <AuthInputBox
           placeholder={"password"}
           type={"password"}
-          isError={errors.password}
+          isError={!!errors.password}
           errorMessage={errors.password?.message}
           register={register("password", {
             required: "password is required",
@@ -97,7 +98,7 @@ const Join = () => {
         <AuthInputBox
           placeholder={"passwordCheck"}
           type={"password"}
-          isError={errors.passwordCheck}
+          isError={!!errors.passwordCheck}
           errorMessage={errors.passwordCheck?.message}
           register={register("passwordCheck", {
             required: "passwordCheck is required",

@@ -49,7 +49,7 @@ const Login = () => {
       <AuthBox>
         <AuthInputBox
           placeholder={"Email or username"}
-          isError={errors.userId}
+          isError={!!errors.userId}
           errorMessage={errors.userId?.message}
           register={register("userId", {
             required: "userId is required",
@@ -58,7 +58,7 @@ const Login = () => {
         <AuthInputBox
           placeholder={"password"}
           type={"password"}
-          isError={errors.password}
+          isError={!!errors.password}
           errorMessage={errors.password?.message}
           register={register("password", {
             required: "password is required",
