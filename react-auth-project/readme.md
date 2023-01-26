@@ -120,3 +120,17 @@
 
   5. 참고
      - https://www.inflearn.com/questions/753777/nest-new-aaa-%EC%84%A4%EC%B9%98-%EC%98%A4%EB%A5%98-%EB%AC%B8%EC%A0%9C-npx%EB%8F%84-%EC%95%88%EB%8F%BC%EC%9A%94
+
+- jest 실행 오류
+  1. 개요
+     - jest 실행 중 실행 오류가 남
+  2. 문제
+     - typescript를 사용하는 중인데, type가 정의되지 않았거나 하는 부분들이 있어 jest에서 실행 오류 발생
+     - Recoil, react-router-dom 과 같은 라이브러리에서 미리 정의해줘야 하는 컴포넌트들이 있는데(Recoil의 경우엔 RecoilRoot) 해당 컴포넌트가 없어서 오류
+  3. 해결 과정
+     - 전체적으로 타입 정의 & App.tsx 추가
+  4. 해결
+     - 전체적으로 타입 정의
+     - 모든 component에 props 타입을 지정해줌
+     - 한번에 모든 App을 실행하기 위해 main.tsx에서 사용하던 초기 실행을 App.tsx에 새로 정의
+       - main의 경우에는 실행파일(?)이기 때문에 외부에서 hook을 사용하기 힘든데 테스트를 위해 전체 app을 돌려봐야 할 필요성이 있어 추가함
