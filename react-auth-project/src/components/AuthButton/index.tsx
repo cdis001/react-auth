@@ -17,10 +17,15 @@ const AuthBtn = styled.button`
 interface AuthButtonProps {
   title?: string;
   onClick?: () => void;
+  dataTestid?: string;
 }
 
-const AuthButton = ({ title, onClick }: AuthButtonProps) => {
-  return <AuthBtn onClick={onClick}>{title}</AuthBtn>;
+const AuthButton = ({ title, onClick, dataTestid }: AuthButtonProps) => {
+  return (
+    <AuthBtn onClick={onClick} data-testid={dataTestid}>
+      {title}
+    </AuthBtn>
+  );
 };
 
 export default AuthButton;

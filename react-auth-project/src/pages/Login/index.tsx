@@ -54,6 +54,7 @@ const Login = () => {
           register={register("userId", {
             required: "userId is required",
           })}
+          dataTestid={"userIdInput"}
         />
         <AuthInputBox
           placeholder={"password"}
@@ -63,11 +64,18 @@ const Login = () => {
           register={register("password", {
             required: "password is required",
           })}
+          dataTestid={"passwordInput"}
         />
-        <AuthButton onClick={userLoginBtn} title={`로그인`} />
+        <AuthButton
+          onClick={userLoginBtn}
+          title={`로그인`}
+          dataTestid={"loginBtn"}
+        />
         <AuthButtonList>
           <li>
-            <Link to="/join">회원가입</Link>
+            <Link to="/join" data-testid={"signInBtn"}>
+              회원가입
+            </Link>
           </li>
         </AuthButtonList>
       </AuthBox>

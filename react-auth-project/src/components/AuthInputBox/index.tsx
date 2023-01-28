@@ -36,6 +36,7 @@ interface AuthInputBoxProps {
   errorMessage?: string;
   type?: string;
   register?: Object;
+  dataTestid?: string;
 }
 
 const AuthInputBox = ({
@@ -44,10 +45,16 @@ const AuthInputBox = ({
   errorMessage = "",
   type = "text",
   register = {},
+  dataTestid = "",
 }: AuthInputBoxProps) => {
   return (
     <AuthInputDiv>
-      <input placeholder={placeholder} type={type} {...register} />
+      <input
+        placeholder={placeholder}
+        type={type}
+        data-testid={dataTestid}
+        {...register}
+      />
       <p>{isError ? errorMessage : null}</p>
     </AuthInputDiv>
   );
